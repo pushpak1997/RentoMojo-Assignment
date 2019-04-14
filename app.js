@@ -4,12 +4,11 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const passport = require('passport');
 const mongoose = require('mongoose');
-const config = require('./config/database');
+const config = require('./config/db');
 
-
-mongoose.connect('mongodb://localhost:27017/rentoDB', { useMongoClient: true});
+mongoose.connect(config.db, { useMongoClient: true});
 mongoose.connection.on('connected', () => {
-    console.log('Connected to Database '+ 'localhost:27017/rentoDB');
+    console.log('Connected to Database '+ config.db);
 });
 
 mongoose.connection.on('error', (err) => {
@@ -21,13 +20,13 @@ const app = express();
 const users = require('./routes/users');
 
 // Port Number
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 
 // CORS Middleware
 app.use(cors());
 
 // Set Static Folder
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
 
 // Body Parser Middleware
 app.use(bodyParser.json());
