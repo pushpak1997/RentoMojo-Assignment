@@ -12,6 +12,8 @@ import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 
+import { FlashMessagesModule } from 'angular2-flash-messages';
+
 
 const appRoutes: Routes =  [
   {path:'', component: HomeComponent},
@@ -34,7 +36,8 @@ const appRoutes: Routes =  [
     FormsModule,
     HttpClientModule,
     RouterModule.forRoot(appRoutes),
-    NgbModule
+    NgbModule,
+    FlashMessagesModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
