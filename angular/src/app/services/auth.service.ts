@@ -70,15 +70,22 @@ export class AuthService {
   }
 
   comment(com){
-    let headers = new HttpHeaders();
     let user = this.loadUser();
     var newComment = {
       text: com,
       username: user.username
     };
     console.log("comment service called ",user);
+    let headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
     return this.http.post('http://localhost:3000/comments/', newComment, {headers: headers})
+      .map(res => res);
+  }
+
+  getComment(){
+    let headers = new HttpHeaders();
+    headers.append('Content-Type', 'application/json');
+    return this.http.get('http://localhost:3000/comments/', {headers: headers})
       .map(res => res);
   }
 }
