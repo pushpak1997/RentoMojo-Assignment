@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient ,HttpClientModule } from '@angular/common/http';
+import { HttpClient ,HttpHeaders } from '@angular/common/http';
 import 'rxjs/add/operator/map';
 import { JwtHelperService } from "@auth0/angular-jwt";
-import {HttpHeaders} from "@angular/common/http";
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class AuthService {
@@ -17,14 +17,14 @@ export class AuthService {
   registerUser(user) {
     let headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
-    return this.http.post('users/register', user, {headers: headers})
+    return this.http.post('http://localhost:3000/users/register', user, {headers: headers})
       .map(res => res);
   }
 
   authenticateUser(user) {
     let headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
-    return this.http.post('users/authenticate', user, {headers: headers})
+    return this.http.post('http://localhost:3000/users/authenticate', user, {headers: headers})
       .map(res => res);
   }
 
@@ -33,7 +33,7 @@ export class AuthService {
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type', 'application/json');
-    return this.http.get('users/profile', {headers: headers})
+    return this.http.get('http://localhost:3000/users/profile', {headers: headers})
       .map(res => res);
   }
 
@@ -49,13 +49,36 @@ export class AuthService {
     this.authToken = token;
   }
 
+  loadUser() {
+    const user = localStorage.getItem('user');
+    return JSON.parse(user);
+  }
+
   loggedIn() {
-    return !this.jwtHelper.isTokenExpired();
+    // console.log("logged in jwt helper ",this.jwtHelper.isTokenExpired());
+    // return !this.jwtHelper.isTokenExpired();
+    if(localStorage.getItem('user')) return true;
+    else return false;
   }
 
   logout() {
     this.authToken = null;
     this.user = null;
     localStorage.clear();
+    console.log("logged in jwt helper logout ",this.jwtHelper.isTokenExpired());
+
+  }
+
+  comment(com){
+    let headers = new HttpHeaders();
+    let user = this.loadUser();
+    var newComment = {
+      text: com,
+      username: user.username
+    };
+    console.log("comment service called ",user);
+    headers.append('Content-Type', 'application/json');
+    return this.http.post('http://localhost:3000/comments/', newComment, {headers: headers})
+      .map(res => res);
   }
 }
