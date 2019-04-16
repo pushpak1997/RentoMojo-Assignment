@@ -11,19 +11,26 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit {
 
   comment: string;
-  loadedComments: any
+  loadedComments: any;
+  upvotes: any;
+  downvotes: any;
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private flashMessage: FlashMessagesService
-  ) { }
+  ) {
+    this.authService.getComment().subscribe( res => {
+      console.log("loaded comments are ",res);
+      this.loadedComments = res;
+    });
+  }
 
   ngOnInit() {
     this.authService.getComment().subscribe( res => {
       console.log("loaded comments are ",res);
       this.loadedComments = res;
-    })
+    });
   }
 
   onComment(){
@@ -56,16 +63,15 @@ export class HomeComponent implements OnInit {
       let user = this.authService.loadUser();
       var userid=user.id;
       if(comment.upvote.includes(userid)){
-
         console.log("upvotes contain already ");
         this.flashMessage.show('You have already upvoted', {cssClass: 'alert-warning', timeout: 2000});
-
         // doc.upvote.push(user_id);
       }
       else {
         this.authService.commentupvote(comment).subscribe(data => {
           console.log("comment upvoted ", data);
           this.flashMessage.show('Comment upvoted successfully', {cssClass: 'alert-success', timeout: 2000});
+          // this.router.navigate(['/']);
         })
       }
 
@@ -86,13 +92,13 @@ export class HomeComponent implements OnInit {
 
         console.log("downvotes contain already ");
         this.flashMessage.show('You have already downvoted', {cssClass: 'alert-warning', timeout: 2000});
-
         // doc.upvote.push(user_id);
       }
       else {
         this.authService.commentdownvote(comment).subscribe(data => {
           console.log("comment downvoted ", data);
           this.flashMessage.show('Comment downvoted successfully', {cssClass: 'alert-success', timeout: 2000});
+          // this.router.navigate(['/']);
         })
       }
 
