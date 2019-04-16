@@ -1,5 +1,5 @@
 module.exports = {
     // database: 'mongodb://<username>:<password>@ds12226.mlab.com:12226/meanauthapp',   //prod
-    db: 'mongodb://localhost:27017/rentoDB',    //dev
+    db: 'mongodb+srv://pushpak:pushpak@cluster0-oxy3w.mongodb.net/test?retryWrites=true',    //dev
     secret: '#mysecret123'
 }
