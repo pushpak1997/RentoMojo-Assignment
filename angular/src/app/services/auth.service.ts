@@ -82,6 +82,36 @@ export class AuthService {
       .map(res => res);
   }
 
+  commentupvote(com){
+    let user = this.loadUser();
+    var userid=user.id;
+    var comid=com._id;
+    console.log("printing userid ",userid);
+    console.log("printing commentid ",comid);
+    var newbody = {
+      id: userid
+    };
+    let headers = new HttpHeaders();
+    headers.append('Content-Type', 'application/json');
+    var upvoteurl='http://localhost:3000/comments/upvote/'+comid;
+    return this.http.put('http://localhost:3000/comments/upvote/'+comid, newbody, {headers: headers})
+      .map(res => res);
+  }
+  commentdownvote(com){
+    let user = this.loadUser();
+    var userid=user.id;
+    var comid=com._id;
+    console.log("printing userid ",userid);
+    console.log("printing commentid ",comid);
+    var newbody = {
+      id: userid
+    };
+    let headers = new HttpHeaders();
+    headers.append('Content-Type', 'application/json');
+    // var downvoteurl='http://localhost:3000/comments/downvote/'+comid;
+    return this.http.put('http://localhost:3000/comments/downvote/'+comid, newbody, {headers: headers})
+      .map(res => res);
+  }
   getComment(){
     let headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');

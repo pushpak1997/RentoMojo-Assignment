@@ -16,22 +16,25 @@
 
       <!--        posted comments -->
       <div class="row" >
-        <div class="col-md-12" *ngFor="let comment of loadedComments">
+        <div class="col-md-12" *ngFor="let comment of loadedComments; let i = index">
+          <div class="card-block">
           <div class="row" style="padding-left: 20px;">
-            <div class="col-md-10">
-              {{comment.author}} <br>
+            <div class="col-md-8">
+              <b>{{i+1}}.&nbsp; &nbsp;{{comment.author}}</b> <br>
               {{comment.text}}
             </div>
-            <div class="col-md-2">
-              <button type="submit" (click)="upvote()">
-                <img src="../../../assets/like.png" alt="" style="height: 25px;">{{comment.upvote.length}} <br>
+            <div class="col-md-4">
+              <button type="submit" class="btn btn-link" style="height: 20px;color: green" (click)="upvote(comment)">
+                <img src="../../../assets/like.png" alt="" style="height: 20px;"> {{comment.upvote.length}} upvote
               </button>
-              <button type="submit" (click)="downvote()">
-                <img src="../../../assets/dislike.png" alt="" style="height: 15px;margin-right: 5px;margin-left: 5px;">{{comment.downvote.length}}
+              <button type="submit" class="btn btn-link" style="height: 20px; color: red" (click)="downvote(comment)">
+                <img src="../../../assets/dislike.png" alt="" style="height: 20px;"> {{comment.downvote.length}} downvote
               </button>
               <br>
             </div>
           </div>
+        </div>
+          <br>
         </div>
       </div>
 

@@ -33,7 +33,7 @@ router.post("/",function(req,res){
     });
 });
 
-router.put("/upvote/:comment_id",isLoggedIn,function(req,res){
+router.put("/upvote/:comment_id",function(req,res){
     var id = req.params.comment_id;
     var user_id=req.body.id;
     Comment.findOne({_id:id}).then(function (doc){
@@ -46,6 +46,7 @@ router.put("/upvote/:comment_id",isLoggedIn,function(req,res){
         }
         else if(doc.upvote.includes(user_id)){
             console.log("upvotes contain already ",doc.upvote);
+
             // doc.upvote.push(user_id);
         }
         else{
@@ -65,7 +66,7 @@ router.put("/upvote/:comment_id",isLoggedIn,function(req,res){
 
 });
 
-router.put("/downvote/:comment_id",isLoggedIn,function(req,res){
+router.put("/downvote/:comment_id",function(req,res){
     var id = req.params.comment_id;
     var user_id=req.body.id;
     Comment.findOne({_id:id}).then(function (doc){

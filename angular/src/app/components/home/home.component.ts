@@ -40,30 +40,62 @@ export class HomeComponent implements OnInit {
       this.comment = '';
       this.authService.comment(com).subscribe(data => {
         console.log("comment posted ", data);
-        this.flashMessage.show('Comment posted successfully', {cssClass: 'alert-success', timeout: 2000});
+        this.flashMessage.show('Comment postd successfully', {cssClass: 'alert-success', timeout: 2000});
       })
     }
   }
 
-  upvote(){
-    console.log("upvote clicked");
+  upvote(comment){
+    console.log("upvote clicked",comment);
     if(!this.authService.loggedIn()){
       this.flashMessage.show('Please Login ', {cssClass: 'alert-danger', timeout: 2000});
       this.router.navigate(['/login']);
     }
     else{
-      console.log("upvote clicked");
+      console.log("upvote clicked2");
+      let user = this.authService.loadUser();
+      var userid=user.id;
+      if(comment.upvote.includes(userid)){
+
+        console.log("upvotes contain already ");
+        this.flashMessage.show('You have already upvoted', {cssClass: 'alert-warning', timeout: 2000});
+
+        // doc.upvote.push(user_id);
+      }
+      else {
+        this.authService.commentupvote(comment).subscribe(data => {
+          console.log("comment upvoted ", data);
+          this.flashMessage.show('Comment upvoted successfully', {cssClass: 'alert-success', timeout: 2000});
+        })
+      }
+
     }
   }
 
-  downvote(){
-    console.log("downvote clicked");
+  downvote(comment){
+    console.log("downvote clicked",comment);
     if(!this.authService.loggedIn()){
       this.flashMessage.show('Please Login ', {cssClass: 'alert-danger', timeout: 2000});
       this.router.navigate(['/login']);
     }
     else{
-      console.log("downvote clicked");
+      console.log("downvote clicked2");
+      let user = this.authService.loadUser();
+      var userid=user.id;
+      if(comment.downvote.includes(userid)){
+
+        console.log("downvotes contain already ");
+        this.flashMessage.show('You have already downvoted', {cssClass: 'alert-warning', timeout: 2000});
+
+        // doc.upvote.push(user_id);
+      }
+      else {
+        this.authService.commentdownvote(comment).subscribe(data => {
+          console.log("comment downvoted ", data);
+          this.flashMessage.show('Comment downvoted successfully', {cssClass: 'alert-success', timeout: 2000});
+        })
+      }
+
     }
   }
 
