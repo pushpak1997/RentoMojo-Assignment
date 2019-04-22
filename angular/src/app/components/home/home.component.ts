@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit {
       this.comment = '';
       this.authService.comment(com).subscribe(data => {
         console.log("comment posted ", data);
-        this.flashMessage.show('Comment postd successfully', {cssClass: 'alert-success', timeout: 2000});
+        this.flashMessage.show('Comment postd successfully please refresh to view changes', {cssClass: 'alert-success', timeout: 3000});
       })
     }
   }
@@ -70,8 +70,8 @@ export class HomeComponent implements OnInit {
       else {
         this.authService.commentupvote(comment).subscribe(data => {
           console.log("comment upvoted ", data);
-          this.flashMessage.show('Comment upvoted successfully', {cssClass: 'alert-success', timeout: 2000});
-          // this.router.navigate(['/']);
+          this.flashMessage.show('Comment upvoted successfully please refresh to view changes', {cssClass: 'alert-success', timeout: 3000});
+          //this.router.navigate(['/']);
         })
       }
 
@@ -97,7 +97,7 @@ export class HomeComponent implements OnInit {
       else {
         this.authService.commentdownvote(comment).subscribe(data => {
           console.log("comment downvoted ", data);
-          this.flashMessage.show('Comment downvoted successfully', {cssClass: 'alert-success', timeout: 2000});
+          this.flashMessage.show('Comment downvoted successfully please refresh to view changes', {cssClass: 'alert-success', timeout: 3000});
           // this.router.navigate(['/']);
         })
       }
