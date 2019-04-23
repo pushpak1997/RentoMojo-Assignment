@@ -301,9 +301,14 @@ var HomeComponent = /** @class */ (function () {
             if (comment.author.id == userid) {
                 this.flashMessage.show('You cant upvote your own comment', { cssClass: 'alert-warning position-fixed', timeout: 2000 });
             }
-            else if (comment.upvote.includes(userid) || comment.downvote.includes(userid)) {
+            else if (comment.downvote.includes(userid)) {
                 console.log("upvotes or downvotes contain already ");
-                this.flashMessage.show('You have already upvoted or downvoted', { cssClass: 'alert-warning position-fixed', timeout: 2000 });
+                this.flashMessage.show('You have already downvoted', { cssClass: 'alert-warning position-fixed', timeout: 2000 });
+                // doc.upvote.push(user_id);
+            }
+            else if (comment.upvote.includes(userid)) {
+                console.log("upvotes or downvotes contain already ");
+                this.flashMessage.show('You have already upvoted ', { cssClass: 'alert-warning position-fixed', timeout: 2000 });
                 // doc.upvote.push(user_id);
             }
             else {
@@ -330,9 +335,14 @@ var HomeComponent = /** @class */ (function () {
             if (comment.author.id == userid) {
                 this.flashMessage.show('You cant downvote your own comment', { cssClass: 'alert-warning position-fixed', timeout: 2000 });
             }
-            else if (comment.upvote.includes(userid) || comment.downvote.includes(userid)) {
+            else if (comment.upvote.includes(userid)) {
                 console.log("upvotes or downvotes contain already ");
-                this.flashMessage.show('You have already upvoted or downvoted', { cssClass: 'alert-warning position-fixed', timeout: 2000 });
+                this.flashMessage.show('You have already upvoted', { cssClass: 'alert-warning position-fixed', timeout: 2000 });
+                // doc.upvote.push(user_id);
+            }
+            else if (comment.downvote.includes(userid)) {
+                console.log("upvotes or downvotes contain already ");
+                this.flashMessage.show('You have already downvoted', { cssClass: 'alert-warning position-fixed', timeout: 2000 });
                 // doc.upvote.push(user_id);
             }
             else {
