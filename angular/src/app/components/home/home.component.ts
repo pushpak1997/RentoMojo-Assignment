@@ -36,10 +36,10 @@ export class HomeComponent implements OnInit {
   onComment(){
     console.log("comment is ",this.comment);
     if(!this.comment){
-      this.flashMessage.show('No Comment ', {cssClass: 'alert-danger', timeout: 2000});
+      this.flashMessage.show('No Comment ', {cssClass: 'alert-danger position-fixed ', timeout: 2000});
     }
     else if(!this.authService.loggedIn()){
-      this.flashMessage.show('Please Login ', {cssClass: 'alert-danger', timeout: 2000});
+      this.flashMessage.show('Please Login ', {cssClass: 'alert-danger ', timeout: 2000});
       this.router.navigate(['/login']);
     }
     else {
@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit {
         console.log("comment posted ", data);
         //console.log("com",com);
         this.loadedComments.push(data);
-        this.flashMessage.show('Comment postd successfully ', {cssClass: 'alert-success', timeout: 2000});
+        this.flashMessage.show('Comment posted successfully ', {cssClass: 'alert-success position-fixed', timeout: 2000});
       })
     }
   }
@@ -57,23 +57,27 @@ export class HomeComponent implements OnInit {
   upvote(comment){
     console.log("upvote clicked",comment);
     if(!this.authService.loggedIn()){
-      this.flashMessage.show('Please Login ', {cssClass: 'alert-danger', timeout: 2000});
+      this.flashMessage.show('Please Login ', {cssClass: 'alert-danger ', timeout: 2000});
       this.router.navigate(['/login']);
     }
     else{
       console.log("upvote clicked2");
       let user = this.authService.loadUser();
       var userid=user.id;
-      if(comment.upvote.includes(userid)){
-        console.log("upvotes contain already ");
-        this.flashMessage.show('You have already upvoted', {cssClass: 'alert-warning', timeout: 2000});
+      if(comment.author.id==userid){
+        this.flashMessage.show('You cant upvote your own comment', {cssClass: 'alert-warning position-fixed', timeout: 2000});
+
+      }
+      else if(comment.upvote.includes(userid)||comment.downvote.includes(userid)){
+        console.log("upvotes or downvotes contain already ");
+        this.flashMessage.show('You have already upvoted or downvoted', {cssClass: 'alert-warning position-fixed', timeout: 2000});
         // doc.upvote.push(user_id);
       }
       else {
         this.authService.commentupvote(comment).subscribe(data => {
           console.log("comment upvoted ", data);
           comment.upvote.push(userid);
-          this.flashMessage.show('Comment upvoted successfully ', {cssClass: 'alert-success', timeout: 2000});
+          this.flashMessage.show('Comment upvoted successfully ', {cssClass: 'alert-success position-fixed', timeout: 2000});
           //this.router.navigate(['/']);
         })
       }
@@ -91,17 +95,20 @@ export class HomeComponent implements OnInit {
       console.log("downvote clicked2");
       let user = this.authService.loadUser();
       var userid=user.id;
-      if(comment.downvote.includes(userid)){
+      if(comment.author.id==userid){
+        this.flashMessage.show('You cant downvote your own comment', {cssClass: 'alert-warning position-fixed', timeout: 2000});
 
-        console.log("downvotes contain already ");
-        this.flashMessage.show('You have already downvoted', {cssClass: 'alert-warning', timeout: 2000});
+      }
+      else if(comment.upvote.includes(userid)||comment.downvote.includes(userid)){
+        console.log("upvotes or downvotes contain already ");
+        this.flashMessage.show('You have already upvoted or downvoted', {cssClass: 'alert-warning position-fixed', timeout: 2000});
         // doc.upvote.push(user_id);
       }
       else {
         this.authService.commentdownvote(comment).subscribe(data => {
           console.log("comment downvoted ", data);
           comment.downvote.push(userid)
-          this.flashMessage.show('Comment downvoted successfully', {cssClass: 'alert-success', timeout: 2000});
+          this.flashMessage.show('Comment downvoted successfully', {cssClass: 'alert-success position-fixed', timeout: 2000});
           // this.router.navigate(['/']);
         })
       }

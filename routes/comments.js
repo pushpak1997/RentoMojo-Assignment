@@ -21,7 +21,7 @@ router.get("/",function(req,res){
 router.post("/",function(req,res){
     console.log("post comment ",req.body);
     var text =req.body.text;
-    var author= req.body.username;
+    var author= req.body.author;
     var newComment= {text:text,author:author};
     Comment.create(newComment,function(err,newlyCreated){
         if(err){

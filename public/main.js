@@ -223,7 +223,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container pb-cmnt-container\">\n  <div class=\"row\">\n    <div class=\"col-md-6 offset-md-3\">\n      <div class=\"card card-info\">\n        <div class=\"card-block\">\n          <form class=\"form-inline\" (submit)=\"onComment()\">\n<!--            <textarea placeholder=\"Write your comment here!\" class=\"pb-cmnt-textarea form-control\" [(ngModel)]=\"comment\" name=\"comment\" ></textarea>-->\n            <input type=\"text\" class=\"form-control pb-cmnt-textarea\" placeholder=\"Enter Comment\" [(ngModel)]=\"comment\" name=\"comment\">\n            <div class=\"mt-1 mb-2 ml-2\">\n              <button class=\"btn btn-danger\" type=\"submit\">Post Comment</button>\n            </div>\n          </form>\n        </div>\n      </div>\n\n\n      <!--        posted comments -->\n      <div class=\"row\" >\n        <div class=\"col-md-12\" *ngFor=\"let comment of loadedComments; let i = index\">\n          <div class=\"card-block\">\n          <div class=\"row\" style=\"padding-left: 20px;\">\n            <div class=\"col-md-8\">\n              <b>{{i+1}}.&nbsp; &nbsp;{{comment.author}}</b> <br>\n              {{comment.text}}\n            </div>\n            <div class=\"col-md-4\">\n              <button type=\"submit\" class=\"btn btn-link\" style=\"height: 20px;color: green\" (click)=\"upvote(comment)\">\n                <img src=\"../../../assets/like.png\" alt=\"\" style=\"height: 20px;\"> {{comment.upvote.length}} upvote\n              </button>\n              <button type=\"submit\" class=\"btn btn-link\" style=\"height: 20px; color: red\" (click)=\"downvote(comment)\">\n                <img src=\"../../../assets/dislike.png\" alt=\"\" style=\"height: 20px;\"> {{comment.downvote.length}} downvote\n              </button>\n              <br>\n            </div>\n          </div>\n        </div>\n          <br>\n        </div>\n      </div>\n\n    </div>\n  </div>\n</div>\n\n<style>\n  .pb-cmnt-container {\n    font-family: Lato;\n    margin-top: 100px;\n  }\n\n  .pb-cmnt-textarea {\n    resize: none;\n    padding: 20px;\n    height: 130px;\n    width: 100%;\n    border: 1px solid #F2F2F2;\n  }\n</style>\n"
+module.exports = "<div class=\"container pb-cmnt-container\">\n  <div class=\"row\">\n    <div class=\"col-md-6 offset-md-3\">\n      <div class=\"card card-info\">\n        <div class=\"card-block\">\n          <form class=\"form-inline\" (submit)=\"onComment()\">\n<!--            <textarea placeholder=\"Write your comment here!\" class=\"pb-cmnt-textarea form-control\" [(ngModel)]=\"comment\" name=\"comment\" ></textarea>-->\n            <input type=\"text\" class=\"form-control pb-cmnt-textarea\" placeholder=\"Enter Comment\" [(ngModel)]=\"comment\" name=\"comment\">\n            <div class=\"mt-1 mb-2 ml-2\">\n              <button class=\"btn btn-danger\" type=\"submit\">Post Comment</button>\n            </div>\n          </form>\n        </div>\n      </div>\n\n\n      <!--        posted comments -->\n      <div class=\"row\" >\n        <div class=\"col-md-12\" *ngFor=\"let comment of loadedComments; let i = index\">\n          <div class=\"card-block\">\n          <div class=\"row\" style=\"padding-left: 20px;\">\n            <div class=\"col-md-8\">\n              <b>{{i+1}}.&nbsp; &nbsp;{{comment.author.username}}</b> <br>\n              {{comment.text}}\n            </div>\n            <div class=\"col-md-4\">\n              <button type=\"submit\" class=\"btn btn-link\" style=\"height: 20px;color: green\" (click)=\"upvote(comment)\">\n                <img src=\"../../../assets/like.png\" alt=\"\" style=\"height: 20px;\"> {{comment.upvote.length}} upvote\n              </button>\n              <button type=\"submit\" class=\"btn btn-link\" style=\"height: 20px; color: red\" (click)=\"downvote(comment)\">\n                <img src=\"../../../assets/dislike.png\" alt=\"\" style=\"height: 20px;\"> {{comment.downvote.length}} downvote\n              </button>\n              <br>\n            </div>\n          </div>\n        </div>\n          <br>\n        </div>\n      </div>\n\n    </div>\n  </div>\n</div>\n\n<style>\n  .pb-cmnt-container {\n    font-family: Lato;\n    margin-top: 100px;\n    z-index: -1;\n    /*margin-left: 100px;*!*/\n  }\n\n  .pb-cmnt-textarea {\n    resize: none;\n    padding: 20px;\n    height: 130px;\n    width: 100%;\n    border: 1px solid #F2F2F2;\n  }\n</style>\n"
 
 /***/ }),
 
@@ -270,10 +270,10 @@ var HomeComponent = /** @class */ (function () {
         var _this = this;
         console.log("comment is ", this.comment);
         if (!this.comment) {
-            this.flashMessage.show('No Comment ', { cssClass: 'alert-danger', timeout: 2000 });
+            this.flashMessage.show('No Comment ', { cssClass: 'alert-danger position-fixed ', timeout: 2000 });
         }
         else if (!this.authService.loggedIn()) {
-            this.flashMessage.show('Please Login ', { cssClass: 'alert-danger', timeout: 2000 });
+            this.flashMessage.show('Please Login ', { cssClass: 'alert-danger ', timeout: 2000 });
             this.router.navigate(['/login']);
         }
         else {
@@ -283,7 +283,7 @@ var HomeComponent = /** @class */ (function () {
                 console.log("comment posted ", data);
                 //console.log("com",com);
                 _this.loadedComments.push(data);
-                _this.flashMessage.show('Comment postd successfully ', { cssClass: 'alert-success', timeout: 2000 });
+                _this.flashMessage.show('Comment posted successfully ', { cssClass: 'alert-success position-fixed', timeout: 2000 });
             });
         }
     };
@@ -291,23 +291,26 @@ var HomeComponent = /** @class */ (function () {
         var _this = this;
         console.log("upvote clicked", comment);
         if (!this.authService.loggedIn()) {
-            this.flashMessage.show('Please Login ', { cssClass: 'alert-danger', timeout: 2000 });
+            this.flashMessage.show('Please Login ', { cssClass: 'alert-danger ', timeout: 2000 });
             this.router.navigate(['/login']);
         }
         else {
             console.log("upvote clicked2");
             var user = this.authService.loadUser();
             var userid = user.id;
-            if (comment.upvote.includes(userid)) {
-                console.log("upvotes contain already ");
-                this.flashMessage.show('You have already upvoted', { cssClass: 'alert-warning', timeout: 2000 });
+            if (comment.author.id == userid) {
+                this.flashMessage.show('You cant upvote your own comment', { cssClass: 'alert-warning position-fixed', timeout: 2000 });
+            }
+            else if (comment.upvote.includes(userid) || comment.downvote.includes(userid)) {
+                console.log("upvotes or downvotes contain already ");
+                this.flashMessage.show('You have already upvoted or downvoted', { cssClass: 'alert-warning position-fixed', timeout: 2000 });
                 // doc.upvote.push(user_id);
             }
             else {
                 this.authService.commentupvote(comment).subscribe(function (data) {
                     console.log("comment upvoted ", data);
                     comment.upvote.push(userid);
-                    _this.flashMessage.show('Comment upvoted successfully ', { cssClass: 'alert-success', timeout: 2000 });
+                    _this.flashMessage.show('Comment upvoted successfully ', { cssClass: 'alert-success position-fixed', timeout: 2000 });
                     //this.router.navigate(['/']);
                 });
             }
@@ -324,16 +327,19 @@ var HomeComponent = /** @class */ (function () {
             console.log("downvote clicked2");
             var user = this.authService.loadUser();
             var userid = user.id;
-            if (comment.downvote.includes(userid)) {
-                console.log("downvotes contain already ");
-                this.flashMessage.show('You have already downvoted', { cssClass: 'alert-warning', timeout: 2000 });
+            if (comment.author.id == userid) {
+                this.flashMessage.show('You cant downvote your own comment', { cssClass: 'alert-warning position-fixed', timeout: 2000 });
+            }
+            else if (comment.upvote.includes(userid) || comment.downvote.includes(userid)) {
+                console.log("upvotes or downvotes contain already ");
+                this.flashMessage.show('You have already upvoted or downvoted', { cssClass: 'alert-warning position-fixed', timeout: 2000 });
                 // doc.upvote.push(user_id);
             }
             else {
                 this.authService.commentdownvote(comment).subscribe(function (data) {
                     console.log("comment downvoted ", data);
                     comment.downvote.push(userid);
-                    _this.flashMessage.show('Comment downvoted successfully', { cssClass: 'alert-success', timeout: 2000 });
+                    _this.flashMessage.show('Comment downvoted successfully', { cssClass: 'alert-success position-fixed', timeout: 2000 });
                     // this.router.navigate(['/']);
                 });
             }
@@ -744,7 +750,10 @@ var AuthService = /** @class */ (function () {
         var user = this.loadUser();
         var newComment = {
             text: com,
-            username: user.username
+            author: {
+                id: user.id,
+                username: user.username
+            }
         };
         console.log("comment service called ", user);
         var headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();

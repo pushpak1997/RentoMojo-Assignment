@@ -73,7 +73,10 @@ export class AuthService {
     let user = this.loadUser();
     var newComment = {
       text: com,
-      username: user.username
+      author: {
+        id: user.id,
+        username: user.username
+      }
     };
     console.log("comment service called ",user);
     let headers = new HttpHeaders();
@@ -100,7 +103,7 @@ export class AuthService {
   commentdownvote(com){
     let user = this.loadUser();
     var userid=user.id;
-    var comid=com._id
+    var comid=com._id;
     console.log("printing userid ",userid);
     console.log("printing commentid ",comid);
     var newbody = {

@@ -20,7 +20,7 @@
           <div class="card-block">
           <div class="row" style="padding-left: 20px;">
             <div class="col-md-8">
-              <b>{{i+1}}.&nbsp; &nbsp;{{comment.author}}</b> <br>
+              <b>{{i+1}}.&nbsp; &nbsp;{{comment.author.username}}</b> <br>
               {{comment.text}}
             </div>
             <div class="col-md-4">
@@ -46,6 +46,8 @@
   .pb-cmnt-container {
     font-family: Lato;
     margin-top: 100px;
+    z-index: -1;
+    /*margin-left: 100px;*!*/
   }
 
   .pb-cmnt-textarea {
