@@ -281,7 +281,9 @@ var HomeComponent = /** @class */ (function () {
             this.comment = '';
             this.authService.comment(com).subscribe(function (data) {
                 console.log("comment posted ", data);
-                _this.flashMessage.show('Comment postd successfully', { cssClass: 'alert-success', timeout: 2000 });
+                //console.log("com",com);
+                _this.loadedComments.push(data);
+                _this.flashMessage.show('Comment postd successfully ', { cssClass: 'alert-success', timeout: 2000 });
             });
         }
     };
@@ -304,8 +306,9 @@ var HomeComponent = /** @class */ (function () {
             else {
                 this.authService.commentupvote(comment).subscribe(function (data) {
                     console.log("comment upvoted ", data);
-                    _this.flashMessage.show('Comment upvoted successfully', { cssClass: 'alert-success', timeout: 2000 });
-                    // this.router.navigate(['/']);
+                    comment.upvote.push(userid);
+                    _this.flashMessage.show('Comment upvoted successfully ', { cssClass: 'alert-success', timeout: 2000 });
+                    //this.router.navigate(['/']);
                 });
             }
         }
@@ -329,6 +332,7 @@ var HomeComponent = /** @class */ (function () {
             else {
                 this.authService.commentdownvote(comment).subscribe(function (data) {
                     console.log("comment downvoted ", data);
+                    comment.downvote.push(userid);
                     _this.flashMessage.show('Comment downvoted successfully', { cssClass: 'alert-success', timeout: 2000 });
                     // this.router.navigate(['/']);
                 });
@@ -691,13 +695,13 @@ var AuthService = /** @class */ (function () {
     AuthService.prototype.registerUser = function (user) {
         var headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
         headers.append('Content-Type', 'application/json');
-        return this.http.post('http://localhost:3000/users/register', user, { headers: headers })
+        return this.http.post('/users/register', user, { headers: headers })
             .map(function (res) { return res; });
     };
     AuthService.prototype.authenticateUser = function (user) {
         var headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
         headers.append('Content-Type', 'application/json');
-        return this.http.post('http://localhost:3000/users/authenticate', user, { headers: headers })
+        return this.http.post('/users/authenticate', user, { headers: headers })
             .map(function (res) { return res; });
     };
     AuthService.prototype.getProfile = function () {
@@ -705,7 +709,7 @@ var AuthService = /** @class */ (function () {
         this.loadToken();
         headers.append('Authorization', this.authToken);
         headers.append('Content-Type', 'application/json');
-        return this.http.get('http://localhost:3000/users/profile', { headers: headers })
+        return this.http.get('/users/profile', { headers: headers })
             .map(function (res) { return res; });
     };
     AuthService.prototype.storeUserData = function (token, user) {
@@ -745,7 +749,7 @@ var AuthService = /** @class */ (function () {
         console.log("comment service called ", user);
         var headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
         headers.append('Content-Type', 'application/json');
-        return this.http.post('http://localhost:3000/comments/', newComment, { headers: headers })
+        return this.http.post('/comments/', newComment, { headers: headers })
             .map(function (res) { return res; });
     };
     AuthService.prototype.commentupvote = function (com) {
@@ -759,8 +763,8 @@ var AuthService = /** @class */ (function () {
         };
         var headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
         headers.append('Content-Type', 'application/json');
-        var upvoteurl = 'http://localhost:3000/comments/upvote/' + comid;
-        return this.http.put('http://localhost:3000/comments/upvote/' + comid, newbody, { headers: headers })
+        var upvoteurl = '/comments/upvote/' + comid;
+        return this.http.put('/comments/upvote/' + comid, newbody, { headers: headers })
             .map(function (res) { return res; });
     };
     AuthService.prototype.commentdownvote = function (com) {
@@ -775,13 +779,13 @@ var AuthService = /** @class */ (function () {
         var headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
         headers.append('Content-Type', 'application/json');
         // var downvoteurl='http://localhost:3000/comments/downvote/'+comid;
-        return this.http.put('http://localhost:3000/comments/downvote/' + comid, newbody, { headers: headers })
+        return this.http.put('/comments/downvote/' + comid, newbody, { headers: headers })
             .map(function (res) { return res; });
     };
     AuthService.prototype.getComment = function () {
         var headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
         headers.append('Content-Type', 'application/json');
-        return this.http.get('http://localhost:3000/comments/', { headers: headers })
+        return this.http.get('/comments/', { headers: headers })
             .map(function (res) { return res; });
     };
     AuthService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([

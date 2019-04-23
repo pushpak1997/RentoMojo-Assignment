@@ -90,7 +90,7 @@ router.put("/downvote/:comment_id",function(req,res){
             if(err){
                 res.redirect("back");
             } else{
-                res.status(200).json({staus: true});
+                res.status(200).json({staus: true , });
             }
         });
 

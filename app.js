@@ -37,7 +37,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // var passport = require('./config/passport')(passport);
-
+app.get('/',(req,res)=>{
+    return res.send('index.js')
+})
 app.use('/users', users);
 app.use('/comments', comments);
 

@@ -17,14 +17,14 @@ export class AuthService {
   registerUser(user) {
     let headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
-    return this.http.post('http://localhost:3000/users/register', user, {headers: headers})
+    return this.http.post('/users/register', user, {headers: headers})
       .map(res => res);
   }
 
   authenticateUser(user) {
     let headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
-    return this.http.post('http://localhost:3000/users/authenticate', user, {headers: headers})
+    return this.http.post('/users/authenticate', user, {headers: headers})
       .map(res => res);
   }
 
@@ -33,7 +33,7 @@ export class AuthService {
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type', 'application/json');
-    return this.http.get('http://localhost:3000/users/profile', {headers: headers})
+    return this.http.get('/users/profile', {headers: headers})
       .map(res => res);
   }
 
@@ -78,7 +78,7 @@ export class AuthService {
     console.log("comment service called ",user);
     let headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
-    return this.http.post('http://localhost:3000/comments/', newComment, {headers: headers})
+    return this.http.post('/comments/', newComment, {headers: headers})
       .map(res => res);
   }
 
@@ -93,14 +93,14 @@ export class AuthService {
     };
     let headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
-    var upvoteurl='http://localhost:3000/comments/upvote/'+comid;
-    return this.http.put('http://localhost:3000/comments/upvote/'+comid, newbody, {headers: headers})
+    var upvoteurl='/comments/upvote/'+comid;
+    return this.http.put('/comments/upvote/'+comid, newbody, {headers: headers})
       .map(res => res);
   }
   commentdownvote(com){
     let user = this.loadUser();
     var userid=user.id;
-    var comid=com._id;
+    var comid=com._id
     console.log("printing userid ",userid);
     console.log("printing commentid ",comid);
     var newbody = {
@@ -109,13 +109,13 @@ export class AuthService {
     let headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
     // var downvoteurl='http://localhost:3000/comments/downvote/'+comid;
-    return this.http.put('http://localhost:3000/comments/downvote/'+comid, newbody, {headers: headers})
+    return this.http.put('/comments/downvote/'+comid, newbody, {headers: headers})
       .map(res => res);
   }
   getComment(){
     let headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
-    return this.http.get('http://localhost:3000/comments/', {headers: headers})
+    return this.http.get('/comments/', {headers: headers})
       .map(res => res);
   }
 }
